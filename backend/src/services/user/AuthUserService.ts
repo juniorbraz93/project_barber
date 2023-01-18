@@ -3,8 +3,8 @@ import { compare } from "bcryptjs";
 import { sign } from 'jsonwebtoken';
 
 interface AuthUserRquest {
-  email: String | any;
-  password: String | any;
+  email: string | any;
+  password: string | any;
 }
 
 class AuthUserService {

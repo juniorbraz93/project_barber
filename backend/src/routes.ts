@@ -5,6 +5,7 @@ import { AuthUserController } from './controllers/user/AuthUserController'
 import { DetailUserController } from './controllers/user/DetailUserController'
 
 import { auth } from './middlewares/auth'
+import { UpdateUserController } from './controllers/user/UpdateUserController'
 
 const router = Router()
 
@@ -19,6 +20,7 @@ router.get('/teste', (req: Request, res: Response) => {
 router.post('/users', new CreateUserController().handle)
 router.post('/session', new AuthUserController().handle)
 router.get('/current', auth, new DetailUserController().handle)
+router.put('/update', auth, new UpdateUserController().handle)
 
 export { router }
 
