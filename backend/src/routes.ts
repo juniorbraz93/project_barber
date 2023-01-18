@@ -6,6 +6,7 @@ import { DetailUserController } from './controllers/user/DetailUserController'
 
 import { auth } from './middlewares/auth'
 import { UpdateUserController } from './controllers/user/UpdateUserController'
+import { CreateHaircutController } from './controllers/haircut/CreateHaircutController'
 
 const router = Router()
 
@@ -21,6 +22,11 @@ router.post('/users', new CreateUserController().handle)
 router.post('/session', new AuthUserController().handle)
 router.get('/current', auth, new DetailUserController().handle)
 router.put('/update', auth, new UpdateUserController().handle)
+
+// --- Rotas Haircut
+
+router.post('/haircut', auth, new CreateHaircutController().handle)
+
 
 export { router }
 
