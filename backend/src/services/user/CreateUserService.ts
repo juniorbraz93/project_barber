@@ -7,7 +7,7 @@ interface UserRequest {
   password: String | any;
 }
 
-class CreateUserServices {
+class CreateUserService {
   async execute({ name, email, password }: UserRequest) {
     if (!email) {
       throw new Error('Email incorrect')
@@ -42,4 +42,4 @@ class CreateUserServices {
   }
 }
 
-export { CreateUserServices }
+export { CreateUserService }
