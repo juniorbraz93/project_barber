@@ -14,6 +14,7 @@ import { CountHaircutsController } from './controllers/haircut/CountHaircutsCont
 import { DetailHaircutController } from './controllers/haircut/DetailHaircutController'
 import { NewScheduleController } from './controllers/schedule/NewScheduleController'
 import { ListScheduleController } from './controllers/schedule/ListScheduleController'
+import { FinishScheduleController } from './controllers/schedule/FinishScheduleController'
 
 const router = Router()
 
@@ -42,7 +43,8 @@ router.get('/detail', auth, new DetailHaircutController().handle)
 // --- Rotas Service Schedule
 
 router.post('/schedule', auth, new NewScheduleController().handle)
-router.get('/schedules', auth, new ListScheduleController().handle)
+router.get('/schedule', auth, new ListScheduleController().handle)
+router.delete('/schedule', auth, new FinishScheduleController().handle)
 
 
 export { router }
