@@ -26,7 +26,6 @@ export default function Register(){
               src={logoImg}
               quality={100}
               width={240}
-              objectFit="fill"
               alt='Logo barberpro'
               />
 
