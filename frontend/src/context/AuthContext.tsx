@@ -1,9 +1,8 @@
-import { createContext, ReactNode, useState } from "react";
-import { destroyCookie, setCookie } from 'nookies'
+import { createContext, ReactNode, useState, useEffect } from "react";
+import { destroyCookie, setCookie, parseCookies } from 'nookies'
 import Router from "next/router";
 
 import { api } from "@/services/apiClient";
-import axios from "axios";
 
 interface AuthContextData {
   user: UserProps;
@@ -18,7 +17,6 @@ interface UserProps {
   name:  string | any;
   email:  string | any;
   address:  string | null;
-  token:  string | any;
   subscriptions?: SubscriptionProps | null | any;
 }
 
@@ -59,6 +57,25 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const [user,setUser] = useState<UserProps>()
   const isAuthenticated = !!user;
 
+  useEffect(() => {
+    const { '@barber.token': token } = parseCookies()
+
+    if (token) {
+      api.get('/current').then((response) => {
+        const { id, name, email, address, subscriptions } = response.data
+        setUser({
+          id,
+          name,
+          email,
+          address,
+          subscriptions
+        })
+      }).catch(() => {
+        signOut();
+      })
+    }
+  }, [])
+
   async function signIn({email, password}: SignInProps) {
     try {
       const response = await api.post('/session', {
@@ -77,7 +94,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
         id,
         name,
         email,
-        token,
         address,
         subscriptions
       })
