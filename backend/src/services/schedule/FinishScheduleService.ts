@@ -1,8 +1,8 @@
 import prismaClient from "../../prisma";
 
 interface FinishSchedule {
-  schedule_id: string | any;
-  user_id: string | any;
+  schedule_id: string;
+  user_id: string;
 }
 
 class FinishScheduleService {

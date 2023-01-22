@@ -1,7 +1,7 @@
 import prismaClient from "../../prisma";
 
 interface CheckSubscription {
-  user_id: string | any
+  user_id: string;
 }
 
 class CheckSubscruiptionService{
