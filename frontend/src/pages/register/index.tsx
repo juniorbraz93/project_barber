@@ -7,6 +7,8 @@ import { Flex, Text, Center, Input, Button} from '@chakra-ui/react'
 
 import { AuthContext } from '@/context/AuthContext'
 
+import { canSSRGuest } from '@/utils/canSSRGuest'
+
 export default function Register(){
   const { signUp } = useContext(AuthContext)
   const [name, setName] = useState('')
@@ -100,3 +102,9 @@ export default function Register(){
     </>
   )
 }
+
+export const getServerSideProps = canSSRGuest(async (ctx) => {
+  return {
+    props: {}
+  }
+})
