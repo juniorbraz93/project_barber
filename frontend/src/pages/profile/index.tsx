@@ -1,3 +1,4 @@
+import { useContext, useState } from "react";
 import Head from "next/head";
 import {
   Flex,
@@ -9,10 +10,35 @@ import {
 } from '@chakra-ui/react'
 
 import { Sidebar } from "@/components/sidebar";
-
 import Link from "next/link";
+import { canSSRAuth } from "@/utils/canSSRAuth";
+import { AuthContext } from "@/context/AuthContext";
 
-export default function Profile() {
+import { setupAPIClient } from "@/services/api"; 
+
+interface UserProps {
+  id: string;
+  name: string;
+  email: string;
+  address: string | null;
+}
+
+interface ProfileProps {
+  user: UserProps;
+  premium: boolean;
+}
+
+export default function Profile({ user, premium }: ProfileProps ) {
+
+  const { logoutUser } = useContext(AuthContext)
+
+  const [name, setName] = useState(user && user?.name)
+  const [address, setAddress] = useState(user?.address ? user?.address : '')
+
+  async function handleLogout() {
+    await logoutUser()
+  }
+
   return (
     <>
       <Head>
@@ -28,10 +54,30 @@ export default function Profile() {
             <Flex direction='column' w='85%' >
 
               <Text mb={2} fontSize='xl' fontWeight='bold' color='white'>Nome da barbearia: </Text>
-              <Input mb={3} w='100%' bg='gray.900' placeholder="Nome da sua Barbearia" size='lg' type='text' />
+              <Input
+                color='white'
+                mb={3}
+                w='100%'
+                bg='gray.900'
+                placeholder="Nome da sua Barbearia"
+                size='lg'
+                type='text'
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
 
               <Text mb={2} fontSize='xl' fontWeight='bold' color='white'>Endereço: </Text>
-              <Input mb={3} w='100%' bg='gray.900' placeholder="Endereço da barbearia" size='lg' type='text' />
+              <Input
+                color='white' 
+                mb={3}
+                w='100%'
+                bg='gray.900'
+                placeholder="Endereço da barbearia"
+                size='lg'
+                type='text'
+                value={address}
+                onChange={(e) => setAddress(e.target.value)}
+              />
 
               <Text mb={2} fontSize='xl' fontWeight='bold' color='white'>Plano atual: </Text>
               <Flex
@@ -45,7 +91,9 @@ export default function Profile() {
                 alignItems='center'
                 justifyContent='space-between'
               >
-                <Text p={2} fontSize='lg' color='#4DFFB4' fontWeight='bold' >Plano Grátis</Text>
+                <Text p={2} fontSize='lg' color={premium ? '#FBA931' : '#4DFFB4'} fontWeight='bold' >
+                  Plano { premium ? 'Premium' : 'Grátis' }
+                  </Text>
 
                 <Link href='plans'>
                   <Box
@@ -88,6 +136,7 @@ export default function Profile() {
               _hover={{
                 bg: 'transparent'
               }}
+              onClick={handleLogout}
               >
                 Sair da conta
               </Button>
@@ -100,3 +149,41 @@ export default function Profile() {
     </>
   )
 }
+
+
+export const getServerSideProps = canSSRAuth(async (ctx) => {
+
+  try {
+    const apiClinet = setupAPIClient(ctx)
+
+    const response = await apiClinet.get('/current')
+
+    const user = {
+      id: response.data.data.id,
+      name: response.data.data.name,
+      email: response.data.data.email,
+      address: response.data.data?.address
+    }     
+
+    
+  return {
+    props: {
+      user: user ,
+      premium: response.data.data?.subscriptions?.status === 'active' ? true : false
+    }
+  }
+    
+    
+  } catch (error) {
+    console.log(error);
+
+    return {
+      redirect: {
+        destination: '/dashboard',
+        permanent: false
+      }
+    }
+    
+  }
+
+})

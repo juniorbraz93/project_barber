@@ -13,16 +13,16 @@ interface AuthContextData {
 }
 
 interface UserProps {
-  id: string | any;
-  name:  string | any;
-  email:  string | any;
+  id: string;
+  name:  string;
+  email:  string;
   address:  string | null;
-  subscriptions?: SubscriptionProps | null | any;
+  subscriptions?: SubscriptionProps | null;
 }
 
 interface SubscriptionProps {
-  id:  string | any;
-  status:  string | any;
+  id:  string;
+  status:  string;
 }
 
 type AuthProviderProps = {
@@ -30,14 +30,14 @@ type AuthProviderProps = {
 }
 
 interface SignInProps {
-  email:  string | any;
-  password:  string | any;
+  email:  string;
+  password:  string;
 }
 
 interface SignUpProps {
-  name:  string | any;
-  email:  string | any;
-  password:  string | any;
+  name:  string;
+  email:  string;
+  password:  string;
 }
 
 
@@ -127,7 +127,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   async function logoutUser() {
     try {
       destroyCookie(null, '@barber.token', { path: '/' })
-      Router.push('/')
+      Router.push('/login')
       setUser(null)
     } catch (error) {
       console.log(error);
