@@ -1,7 +1,7 @@
 import prismaClient from "../../prisma";
 
 interface Detailhaircut{
-  haircut_id: string| any
+  haircut_id: string
 }
 
 class DetailHaircutService {

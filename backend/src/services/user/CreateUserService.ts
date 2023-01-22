@@ -2,9 +2,9 @@ import prismaClient from "../../prisma";
 import { hash } from "bcryptjs";
 
 interface UserRequest {
-  name: string | any;
-  email: string | any;
-  password: string | any;
+  name: string;
+  email: string;
+  password: string;
 }
 
 class CreateUserService {

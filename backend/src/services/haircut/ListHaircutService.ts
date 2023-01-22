@@ -1,8 +1,8 @@
 import prismaClient from "../../prisma";
 
 interface HaircutRequest {
-  user_id: string | any;
-  status: boolean | string | any
+  user_id: string;
+  status: boolean | string
 }
 
 

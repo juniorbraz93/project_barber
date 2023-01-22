@@ -1,9 +1,9 @@
 import prismaClient from "../../prisma";
 
 interface HaircutRequest {
-  user_id: string | any;
-  name: string | any;
-  price: number | any;
+  user_id: string;
+  name: string;
+  price: number;
 }
 
 class CreateHaircutService {

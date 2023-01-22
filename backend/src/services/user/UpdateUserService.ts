@@ -1,9 +1,9 @@
 import prismaClient from "../../prisma";
 
 interface UserRequest {
-  user_id: string | any;
-  name: string | any;
-  address: string | any;
+  user_id: string;
+  name: string;
+  address: string;
 }
 
 class UpdateUserService {
