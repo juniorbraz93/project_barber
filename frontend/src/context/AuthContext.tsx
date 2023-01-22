@@ -3,11 +3,14 @@ import { destroyCookie, setCookie } from 'nookies'
 import Router from "next/router";
 
 import { api } from "@/services/apiClient";
+import axios from "axios";
 
 interface AuthContextData {
   user: UserProps;
   isAuthenticated: boolean;
   signIn: (credentials: SignInProps) => Promise<void>;
+  signUp: (credentials: SignUpProps) => Promise<void>;
+  logoutUser: () => Promise<void>;
 }
 
 interface UserProps {
@@ -29,6 +32,12 @@ type AuthProviderProps = {
 }
 
 interface SignInProps {
+  email:  string | any;
+  password:  string | any;
+}
+
+interface SignUpProps {
+  name:  string | any;
   email:  string | any;
   password:  string | any;
 }
@@ -83,9 +92,42 @@ export function AuthProvider({ children }: AuthProviderProps) {
     }
   }
 
+  async function signUp({ name, email, password }: SignUpProps) {
+    try {
+      const response = await api.post('/users', {
+        name,
+        email,
+        password
+      })
+
+      Router.push('/login')
+
+
+    } catch (error) {
+      console.log('Erro ao registrar', error);
+    }
+  }
+
+  async function logoutUser() {
+    try {
+      destroyCookie(null, '@barber.token', { path: '/' })
+      Router.push('/')
+      setUser(null)
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   
   return (
-    <AuthContext.Provider value={{ user, isAuthenticated, signIn }}>
+    <AuthContext.Provider
+    value={{
+        user,
+        isAuthenticated,
+        signIn,
+        signUp,
+        logoutUser
+      }}>
       {children}
     </AuthContext.Provider>
   )

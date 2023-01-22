@@ -1,17 +1,28 @@
-import { useState } from 'react'
+import { useState, useContext } from 'react'
 import Head from 'next/head'
 import Image from 'next/image'
 import Link from 'next/link'
 import logoImg from '../../../public/images/logo.svg'
 import { Flex, Text, Center, Input, Button} from '@chakra-ui/react'
 
+import { AuthContext } from '@/context/AuthContext'
+
 export default function Register(){
+  const { signUp } = useContext(AuthContext)
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  
 
-  function handleRegister() {
-    alert('Teste')
+  async function handleRegister() {
+    if (name === '' && email === '' && password === '') {
+      return;
+    }
+    await signUp({
+      name,
+      email,
+      password
+    })
   }
   
   return(
@@ -34,6 +45,7 @@ export default function Register(){
           <Input
             background="barber.400"
             variant='filled'
+            color='#FFF'
             size="lg"
             placeholder='Nome da barbearia'
             type='text'
@@ -45,6 +57,7 @@ export default function Register(){
           <Input
             background="barber.400"
             variant='filled'
+            color='#FFF'
             size="lg"
             placeholder='email@email.com'
             type='email'
@@ -56,6 +69,7 @@ export default function Register(){
           <Input
             background="barber.400"
             variant='filled'
+            color='#FFF'
             size="lg"
             placeholder='**********'
             type='text'
