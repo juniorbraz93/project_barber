@@ -15,6 +15,7 @@ import { canSSRAuth } from "@/utils/canSSRAuth";
 import { AuthContext } from "@/context/AuthContext";
 
 import { setupAPIClient } from "@/services/api"; 
+import { api } from "@/services/apiClient";
 
 interface UserProps {
   id: string;
@@ -37,6 +38,24 @@ export default function Profile({ user, premium }: ProfileProps ) {
 
   async function handleLogout() {
     await logoutUser()
+  }
+
+  async function handleUpdateUser() {
+    if (name === '') {
+      return
+    }
+    try {
+      const apiClient = setupAPIClient()
+      await apiClient.put('/update', {
+        name: name,
+        address: address,
+      })
+
+      alert('Dados alterados com sucesso! 😊')
+    } catch (error) {
+      console.log(error);
+      
+    }
   }
 
   return (
@@ -122,6 +141,7 @@ export default function Profile({ user, premium }: ProfileProps ) {
                 _hover={{
                   bg: '#FFB13E'
                 }}
+                onClick={handleUpdateUser}
               >
                 Salvar
               </Button>
