@@ -67,7 +67,7 @@ export default function NewHaircut({subscription, count}: NewhaircutProps ){
   return (
     <>
       <Head>
-        <title>BarbePro - Cadastrar novo corte </title>
+        <title>BarbePro - Cadastrar novo corte</title>
       </Head>
 
       <Sidebar>
