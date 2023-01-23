@@ -13,8 +13,8 @@ import {
 import Link from 'next/link';
 
 import { IoMdPricetag } from 'react-icons/io'
-
-
+import { canSSRAuth } from '@/utils/canSSRAuth';
+import { setupAPIClient } from '@/services/api';
 
 
 export default function Haircuts(){
@@ -94,3 +94,29 @@ export default function Haircuts(){
     </>
   )
 }
+
+
+
+export const getServerSideProps = canSSRAuth(async (ctx) => {
+  try {
+
+    const apiClient = setupAPIClient(ctx)
+
+    const response = await apiClient.get('/check')
+    const count = await apiClient.get('/haircut/count')    
+    
+    return {
+      props: {
+        subscription: response.data?.subscriptions?.status === 'active' ? true : false,
+        count: count.data
+      }
+    }
+  } catch (error) {
+    return {
+      redirect: {
+        destination: '/dashboard',
+        permanent: false
+      }
+    }    
+  }
+})

@@ -203,7 +203,7 @@ export const getServerSideProps = canSSRAuth(async (ctx) => {
   } catch (error) {
     return {
       redirect: {
-        destination: '/dashborad',
+        destination: '/dashboard',
         permanent: false
       }
     }    
