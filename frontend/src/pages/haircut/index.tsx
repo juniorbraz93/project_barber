@@ -1,5 +1,8 @@
+import { useState } from "react";
+
 import Head from "next/head";
 import Link from "next/link";
+import Router from "next/router";
 
 import { Sidebar } from "@/components/sidebar";
 
@@ -9,7 +12,8 @@ import {
   Heading,
   Button,
   useMediaQuery,
-  Input
+  Input,
+  useToast
 } from "@chakra-ui/react";
 
 import { canSSRAuth } from "@/utils/canSSRAuth";
@@ -24,6 +28,42 @@ interface NewhaircutProps {
 
 export default function NewHaircut({subscription, count}: NewhaircutProps ){
   const [isMobile] = useMediaQuery('(max-width: 500px)')
+
+  const toast = useToast()
+
+  const [name, setName] = useState('')
+  const [price, setPrice] = useState('')
+
+  async function handleRegister() {
+    if (name === '' && price === '') {
+      return
+    }
+
+    try {
+
+      const apiClient = setupAPIClient()
+      await apiClient.post('haircut', {
+        name: name,
+        price: Number(price),
+      })
+
+      toast({
+        title: 'Corte Registrado com sucesso!😊',
+        status: 'success',
+        duration: 3000,
+        isClosable: true,
+      })
+
+      Router.push('/haircuts')
+
+    } catch (error) {
+
+      console.log(error);
+      alert('Erro ao cadastra corte')
+
+    }
+  }
+
   return (
     <>
       <Head>
@@ -93,6 +133,8 @@ export default function NewHaircut({subscription, count}: NewhaircutProps ){
               color='white'
               mb={3}
               disabled={!subscription && count >= 3 }
+              value={name}
+              onChange={ (e) => setName(e.target.value) }
             />
 
             <Input 
@@ -105,9 +147,12 @@ export default function NewHaircut({subscription, count}: NewhaircutProps ){
               color='white'
               mb={4}
               disabled={!subscription && count >= 3 }
+              value={price}
+              onChange={ (e) => setPrice(e.target.value) }
             />
 
             <Button
+              onClick={handleRegister}
               w='85%'
               size='lg'
               color='gray.900'
