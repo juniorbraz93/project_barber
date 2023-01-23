@@ -12,9 +12,17 @@ import {
   Input
 } from "@chakra-ui/react";
 
+import { canSSRAuth } from "@/utils/canSSRAuth";
+import { setupAPIClient } from "@/services/api";
+
 import { FiChevronLeft } from 'react-icons/fi'
 
-export default function NewHaircut(){
+interface NewhaircutProps {
+  subscription: boolean;
+  count: number;
+}
+
+export default function NewHaircut({subscription, count}: NewhaircutProps ){
   const [isMobile] = useMediaQuery('(max-width: 500px)')
   return (
     <>
@@ -84,6 +92,7 @@ export default function NewHaircut(){
               bg='gray.900'
               color='white'
               mb={3}
+              disabled={!subscription && count >= 3 }
             />
 
             <Input 
@@ -95,6 +104,7 @@ export default function NewHaircut(){
               bg='gray.900'
               color='white'
               mb={4}
+              disabled={!subscription && count >= 3 }
             />
 
             <Button
@@ -104,10 +114,25 @@ export default function NewHaircut(){
               bg='button.cta'
               mb={6}
               _hover={{ bg:'#FFB13E'}}
+              disabled={!subscription && count >= 3 }
             >
               Cadastrar
             </Button>
 
+            {!subscription && count >= 3 && (
+              <Flex direction='row'>
+                <Text color='white' >
+                  Você atingiu seu limite de corte.
+                </Text>
+                <Link href='/plans'>
+                  <Text fontWeight='bold' color='#31FB6A' cursor='pointer' ml={1} >
+                    Seja premium
+                  </Text>
+                </Link>
+              </Flex>               
+            )}
+
+           
           </Flex>
 
         </Flex>
@@ -115,3 +140,27 @@ export default function NewHaircut(){
     </>    
   )
 }
+
+export const getServerSideProps = canSSRAuth(async (ctx) => {
+  try {
+
+    const apiClient = setupAPIClient(ctx)
+
+    const response = await apiClient.get('/check')
+    const count = await apiClient.get('/haircut/count')    
+    
+    return {
+      props: {
+        subscription: response.data?.subscriptions?.status === 'active' ? true : false,
+        count: count.data
+      }
+    }
+  } catch (error) {
+    return {
+      redirect: {
+        destination: '/dashborad',
+        permanent: false
+      }
+    }    
+  }
+})
