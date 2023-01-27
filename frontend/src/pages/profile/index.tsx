@@ -6,7 +6,8 @@ import {
   Heading,
   Box,
   Input,
-  Button
+  Button,
+  useToast
 } from '@chakra-ui/react'
 
 import { Sidebar } from "@/components/sidebar";
@@ -15,9 +16,6 @@ import { canSSRAuth } from "@/utils/canSSRAuth";
 import { AuthContext } from "@/context/AuthContext";
 
 import { setupAPIClient } from "@/services/api"; 
-import { api } from "@/services/apiClient";
-import { toast } from "react-toastify";
-
 interface UserProps {
   id: string;
   name: string;
@@ -31,6 +29,7 @@ interface ProfileProps {
 }
 
 export default function Profile({ user, premium }: ProfileProps ) {
+  const toast = useToast()
 
   const { logoutUser } = useContext(AuthContext)
 
@@ -52,10 +51,22 @@ export default function Profile({ user, premium }: ProfileProps ) {
         address: address,
       })
 
-      toast.success('Dados alterados com sucesso! 😊')
+      toast({
+        position: 'top-right',
+        description:'Dados alterados com sucesso! 😊',
+        status: 'success',
+        duration: 3000,
+        isClosable: true,
+      })
     } catch (error) {
       console.log(error);
-      toast.error('Erro ao atualizar dados!😥')
+      toast({
+        position: 'top-right',
+        description: 'Erro ao atualizar dados!😥',
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      })
     }
   }
 

@@ -1,5 +1,5 @@
 import { useState, ChangeEvent } from "react";
-
+import Router from "next/router";
 import Head from "next/head";
 import Link from "next/link";
 
@@ -11,7 +11,8 @@ import {
   useMediaQuery,
   Input,
   Stack,
-  Switch
+  Switch,
+  useToast
  } from "@chakra-ui/react";
 
  import { canSSRAuth } from "@/utils/canSSRAuth";
@@ -19,7 +20,6 @@ import { setupAPIClient } from '@/services/api';
 
 import { Sidebar } from "@/components/sidebar";
 import { FiChevronLeft } from "react-icons/fi";
-import { toast } from 'react-toastify';
 
 interface HaircutProps {
   id: string;
@@ -41,6 +41,8 @@ interface EditHaircutProps {
 
 
 export default function EditHaircut({ haircut, subscription }: EditHaircutProps ) {
+  const toast = useToast()
+
   const [isMobile] = useMediaQuery("(max-width: 500px)")
 
   const [name, setName] = useState(haircut?.name)
@@ -72,11 +74,23 @@ export default function EditHaircut({ haircut, subscription }: EditHaircutProps 
         status: status
 
       })
-
-      toast.success('Corte atualizado copm sucesso!😊')
+      Router.push('/haircuts')
+      toast({
+        position: 'top-right',
+        description: 'Corte atualizado copm sucesso!😊',
+        status: 'success',
+        duration: 3000,
+        isClosable: true,
+      })
     } catch (error) {
       console.log(error);
-      toast.error('Erro ao atualizar corte!😥')
+      toast({
+        position: 'top-right',
+        description: 'Erro ao atualizar corte!😥',
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      })
     }
   }
 

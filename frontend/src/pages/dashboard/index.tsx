@@ -8,14 +8,14 @@ import {
    Button,
    Link as ChakraLink,
    useMediaQuery,
-   useDisclosure
+   useDisclosure,
+   useToast 
 } from "@chakra-ui/react";
 
 import { canSSRAuth } from "@/utils/canSSRAuth";
 import { setupAPIClient } from '@/services/api';
 
 import { IoMdPerson } from 'react-icons/io'
-import { toast } from 'react-toastify';
 
 import { Sidebar } from "@/components/sidebar";
 import { ModalInfo } from "@/components/modal";
@@ -36,6 +36,7 @@ interface DashboardProps {
 }
 
 export default function Dashboard({ schedule }: DashboardProps) {
+  const toast = useToast()
   const [isMobile] = useMediaQuery("(max-width: 500px)")
   const {isOpen, onOpen, onClose} = useDisclosure()
   
@@ -63,12 +64,24 @@ export default function Dashboard({ schedule }: DashboardProps) {
       })
       setList(filtrItem)
       onClose()
-      toast.success('Serviço finalizar com sucesso!😊')
+      toast({
+        position: 'top-right',
+        description: 'Serviço finalizar com sucesso!😊',
+        status: 'success',
+        duration: 3000,
+        isClosable: true,
+      })
       
     } catch (error) {
       console.log(error);
       onClose()
-      toast.error('Error ao finalizar serviço!😥')
+      toast({
+        position: 'top-right',
+        description: 'Error ao finalizar serviço!😥',
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      })
     }
   }
 

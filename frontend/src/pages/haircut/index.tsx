@@ -13,13 +13,13 @@ import {
   Button,
   useMediaQuery,
   Input,
+  useToast,
 } from "@chakra-ui/react";
 
 import { canSSRAuth } from "@/utils/canSSRAuth";
 import { setupAPIClient } from "@/services/api";
 
 import { FiChevronLeft } from 'react-icons/fi'
-import { toast } from 'react-toastify';
 
 interface NewhaircutProps {
   subscription: boolean;
@@ -27,6 +27,7 @@ interface NewhaircutProps {
 }
 
 export default function NewHaircut({subscription, count}: NewhaircutProps ){
+  const toast = useToast()
   const [isMobile] = useMediaQuery('(max-width: 500px)')
 
 
@@ -45,14 +46,24 @@ export default function NewHaircut({subscription, count}: NewhaircutProps ){
         name: name,
         price: Number(price),
       })
-
-      toast.success('Corte Registrado com sucesso!😊')
-
       Router.push('/haircuts')
+      toast({
+        position: 'top-right',
+        description: 'Corte Registrado com sucesso!😊',
+        status: 'success',
+        duration: 3000,
+        isClosable: true,
+      })
 
     } catch (error) {
 
-      toast.error('Erro ao cadastra corte!😥')
+      toast({
+        position: 'top-right',
+        description: 'Erro ao cadastra corte!😥',
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      })
     }
   }
 

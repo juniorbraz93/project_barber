@@ -2,13 +2,12 @@ import { useState, ChangeEvent } from "react";
 
 import Head from "next/head";
 import { Sidebar } from "@/components/sidebar";
-import { Button, Flex, Heading, Input, Select } from "@chakra-ui/react";
+import { Button, Flex, Heading, Input, Select, useToast } from "@chakra-ui/react";
 import Link from "next/link";
 
 import { canSSRAuth } from "@/utils/canSSRAuth";
 import { setupAPIClient } from '@/services/api';
 import { useRouter } from "next/router";
-import { toast } from "react-toastify";
 
 interface HaircutProps {
   id: string;
@@ -22,6 +21,8 @@ interface NewProps {
 }
 
 export default function New({ haircuts }: NewProps) {
+  const toast = useToast()
+
   const [customer, setCustomer] = useState('')
   const [haircutSelected, setHaircutSelected] = useState(haircuts[0])
   const router = useRouter()
@@ -36,7 +37,13 @@ export default function New({ haircuts }: NewProps) {
   async function handleRegister() {
 
     if(customer === '') {
-      toast.info('Preencha o nome do cliente. ')
+      toast({
+        position: 'top-right',
+        description: 'Preencha o nome do cliente. ',
+        status: 'info',
+        duration: 3000,
+        isClosable: true,
+      })
       return;
     }
     
@@ -49,12 +56,24 @@ export default function New({ haircuts }: NewProps) {
         customer: customer
       })   
       
-      toast.success('agendamento registrado com sucesso!😊')
+      toast({
+        position: 'top-right',
+        description: 'agendamento registrado com sucesso!😊',
+        status: 'success',
+        duration: 3000,
+        isClosable: true,
+      })
       router.push('/dashboard')
 
     } catch (error) {
       console.log(error);
-      toast.error('Erro ao registrar agendamento!😥')
+      toast({
+        position: 'top-right',
+        description:'Erro ao registrar agendamento!😥',
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      })
     }
   }
 
