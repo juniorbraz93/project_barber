@@ -17,7 +17,7 @@ export default function Home(){
         <Image 
                 src={logoImg}
                 quality={100}
-                width={240}
+                width={360}
                 alt='Logo barberpro'
                 />
 
