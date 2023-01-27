@@ -100,11 +100,9 @@ export default function New({ haircuts }: NewProps) {
               type='text'
               bg='barber.900'
               value={customer}
-              color='#628096'
               onChange={ (e: ChangeEvent<HTMLInputElement>) => setCustomer(e.target.value) }
             />
             <Select
-              color='#628096'
               mb={3}
               size='lg'
               w='85%'
@@ -113,7 +111,7 @@ export default function New({ haircuts }: NewProps) {
             >
               {
                 haircuts?.map(item => (
-                  <option key={item?.id} value={item?.id} >
+                  <option style={{ backgroundColor: '#FFF', color: '#000' }} key={item?.id} value={item?.id} >
                     {item?.name}
                   </option>
                 ))
