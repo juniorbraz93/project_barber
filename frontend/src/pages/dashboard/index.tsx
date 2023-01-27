@@ -91,7 +91,7 @@ export default function Dashboard({ schedule }: DashboardProps) {
           <Link
             href='/new'
           >
-            <Button bg='#2D3748' color='#FFF' >Registrar</Button>
+            <Button bg='#2D3748' _hover={{ bg: 'gray.900'}} >Registrar</Button>
           </Link>
 
         </Flex>

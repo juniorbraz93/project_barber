@@ -78,7 +78,7 @@ export default function New({ haircuts }: NewProps) {
           <Link
             href='/dashboard'
           >
-            <Button bg='#2D3748' color='#FFF' >Voltar</Button>
+            <Button bg='#2D3748' _hover={{ bg: 'gray.900'}} >Voltar</Button>
           </Link>        
           </Flex>
           

@@ -97,7 +97,8 @@ export default function EditHaircut({ haircut, subscription }: EditHaircutProps 
             <Link href='/haircuts'>
               <Button 
                 color='white' 
-                bg='#2D3748' 
+                bg='#2D3748'
+                _hover={{ bg: 'gray.900'}}  
                 p={4} 
                 display='flex' 
                 alignItems='center' 
