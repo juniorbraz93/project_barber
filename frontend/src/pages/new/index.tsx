@@ -8,6 +8,7 @@ import Link from "next/link";
 import { canSSRAuth } from "@/utils/canSSRAuth";
 import { setupAPIClient } from '@/services/api';
 import { useRouter } from "next/router";
+import { toast } from "react-toastify";
 
 interface HaircutProps {
   id: string;
@@ -35,7 +36,7 @@ export default function New({ haircuts }: NewProps) {
   async function handleRegister() {
 
     if(customer === '') {
-      alert('Preencha o nome do cliente. ')
+      toast.info('Preencha o nome do cliente. ')
       return;
     }
     
@@ -48,12 +49,12 @@ export default function New({ haircuts }: NewProps) {
         customer: customer
       })   
       
-      alert('agendamento registrado com sucesso!')
+      toast.success('agendamento registrado com sucesso!😊')
       router.push('/dashboard')
 
     } catch (error) {
       console.log(error);
-      alert('Erro ao registrar!')
+      toast.error('Erro ao registrar agendamento!😥')
     }
   }
 

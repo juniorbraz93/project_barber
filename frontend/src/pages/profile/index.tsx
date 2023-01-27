@@ -16,6 +16,7 @@ import { AuthContext } from "@/context/AuthContext";
 
 import { setupAPIClient } from "@/services/api"; 
 import { api } from "@/services/apiClient";
+import { toast } from "react-toastify";
 
 interface UserProps {
   id: string;
@@ -51,10 +52,10 @@ export default function Profile({ user, premium }: ProfileProps ) {
         address: address,
       })
 
-      alert('Dados alterados com sucesso! 😊')
+      toast.success('Dados alterados com sucesso! 😊')
     } catch (error) {
       console.log(error);
-      
+      toast.error('Erro ao atualizar dados!😥')
     }
   }
 

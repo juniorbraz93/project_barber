@@ -15,6 +15,7 @@ import { canSSRAuth } from "@/utils/canSSRAuth";
 import { setupAPIClient } from '@/services/api';
 
 import { IoMdPerson } from 'react-icons/io'
+import { toast } from 'react-toastify';
 
 import { Sidebar } from "@/components/sidebar";
 import { ModalInfo } from "@/components/modal";
@@ -62,12 +63,12 @@ export default function Dashboard({ schedule }: DashboardProps) {
       })
       setList(filtrItem)
       onClose()
-      alert('Serviço finalizar com sucesso!')
+      toast.success('Serviço finalizar com sucesso!😊')
       
     } catch (error) {
       console.log(error);
       onClose()
-      alert('Error ao finalizar serviço!')
+      toast.error('Error ao finalizar serviço!😥')
     }
   }
 

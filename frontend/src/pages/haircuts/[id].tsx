@@ -19,6 +19,7 @@ import { setupAPIClient } from '@/services/api';
 
 import { Sidebar } from "@/components/sidebar";
 import { FiChevronLeft } from "react-icons/fi";
+import { toast } from 'react-toastify';
 
 interface HaircutProps {
   id: string;
@@ -72,10 +73,10 @@ export default function EditHaircut({ haircut, subscription }: EditHaircutProps 
 
       })
 
-      alert('Corte atualizado copm sucesso!')
+      toast.success('Corte atualizado copm sucesso!😊')
     } catch (error) {
       console.log(error);
-      
+      toast.error('Erro ao atualizar corte!😥')
     }
   }
 

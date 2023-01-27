@@ -103,7 +103,7 @@ export default function Plans({ premium }: PlansProps) {
                 fontWeight='bold'
                 m={2}
                 _hover={{ bg:'gray.400'}}
-                onClick={ () => { alert('Teste') } }
+                onClick={ () => {} }
                 isDisabled={premium}
               >
                 {premium ? (

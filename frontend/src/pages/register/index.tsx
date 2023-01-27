@@ -74,7 +74,7 @@ export default function Register(){
             color='#FFF'
             size="lg"
             placeholder='**********'
-            type='text'
+            type='password'
             mb={6}
             value={password}
             onChange={ (e) => setPassword(e.target.value) }
