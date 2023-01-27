@@ -4,6 +4,7 @@ import Image from 'next/image'
 import { Button, Center, Flex, Text} from '@chakra-ui/react'
 import logoImg from '../../public/images/logo.svg'
 import Link from 'next/link'
+import { canSSRGuest } from '@/utils/canSSRGuest'
 
 
 export default function Home(){
@@ -50,3 +51,9 @@ export default function Home(){
     </>
   )
 }
+
+export const getServerSideProps = canSSRGuest(async (ctx) => {
+  return {
+    props: {}
+  }
+})
