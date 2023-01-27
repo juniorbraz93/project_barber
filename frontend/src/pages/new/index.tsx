@@ -5,8 +5,52 @@ import { Sidebar } from "@/components/sidebar";
 import { Button, Flex, Heading, Input, Select } from "@chakra-ui/react";
 import Link from "next/link";
 
-export default function New() {
+import { canSSRAuth } from "@/utils/canSSRAuth";
+import { setupAPIClient } from '@/services/api';
+import { useRouter } from "next/router";
+
+interface HaircutProps {
+  id: string;
+  name: string;
+  price: number | string;
+  status: boolean;
+  user_id: string;
+}
+interface NewProps {
+  haircuts: HaircutProps[]
+}
+
+export default function New({ haircuts }: NewProps) {
   const [customer, setCustomer] = useState('')
+  const [haircutSelected, setHaircutSelected] = useState(haircuts[0])
+  const router = useRouter()
+
+  function handleChangeSelect(id: string) {
+
+    const haircutItem = haircuts.find(item => item.id === id)
+    
+    setHaircutSelected(haircutItem)
+  }
+
+  async function handleRegister() {
+
+    try {
+
+      const apiClient = setupAPIClient()
+
+      await apiClient.post('/schedule', {
+        haircut_id: haircutSelected?.id,
+        customer: customer
+      })   
+      
+      alert('agendamento registrado com sucesso!')
+      router.push('/dashboard')
+
+    } catch (error) {
+      console.log(error);
+      alert('Erro ao registrar!')
+    }
+  }
 
   return (
     <>
@@ -51,6 +95,7 @@ export default function New() {
               type='text'
               bg='barber.900'
               value={customer}
+              color='#628096'
               onChange={ (e: ChangeEvent<HTMLInputElement>) => setCustomer(e.target.value) }
             />
             <Select
@@ -59,8 +104,15 @@ export default function New() {
               size='lg'
               w='85%'
               bg='barber.900'
+              onChange={ (e) => handleChangeSelect(e.target.value) }
             >
-              <option key={1} value="Barbar completa">Barbar completa</option>
+              {
+                haircuts?.map(item => (
+                  <option key={item?.id} value={item?.id} >
+                    {item?.name}
+                  </option>
+                ))
+              }
             </Select>
 
             <Button
@@ -69,6 +121,7 @@ export default function New() {
               color='gray.900'
               bg='button.cta'
               _hover={{ bg: '#FFB13E' }}
+              onClick={handleRegister}
             >
               Cadastrar
             </Button>
@@ -81,3 +134,40 @@ export default function New() {
     </>
   )
 }
+
+export const getServerSideProps = canSSRAuth(async (ctx) => {
+
+  try {
+    
+    const apiClient = setupAPIClient(ctx)
+
+    const response = await apiClient.get('/haircuts', {
+      params: {
+        status: true,
+      }
+    })    
+    
+    if (response.data === null) {
+      return {
+        redirect: {
+          destination: '/dashboard',
+          permanent: false
+        }
+      }    
+    }
+    
+    return {
+      props: {
+        haircuts: response.data,
+      }
+    }
+    
+  } catch (error) {
+    return {
+      redirect: {
+        destination: '/dashboard',
+        permanent: false
+      }
+    }    
+  }
+})
