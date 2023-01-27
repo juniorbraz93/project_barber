@@ -27,7 +27,7 @@ export default function Home(){
                   backgroundColor='button.cta'
                   mb={6}
                   mr={2}
-                  color='gray.900'
+                  color='#FFF'
                   size='lg'
                   _hover={{ bg: "#FFB13E" }}
                 >
@@ -38,7 +38,7 @@ export default function Home(){
               <Button
                   backgroundColor='button.cta'
                   mb={6}
-                  color='gray.900'
+                  color='#FFF'
                   size='lg'
                   _hover={{ bg: "#FFB13E" }}
                 >
