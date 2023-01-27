@@ -81,7 +81,6 @@ export default function Dashboard() {
             <Text fontWeight='bold' color='#F1F1F1' mb={isMobile ? 2 : 0} >R$ 59.90</Text>
 
           </Flex>
-
         </ChakraLink>
 
       </Flex>
