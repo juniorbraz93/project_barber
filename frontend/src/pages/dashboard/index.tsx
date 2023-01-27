@@ -46,6 +46,31 @@ export default function Dashboard({ schedule }: DashboardProps) {
     onOpen()
   }
 
+  async function handleFinish(id: string) {
+    try {
+        
+      const apiClient = setupAPIClient()
+
+      await apiClient.delete('/schedule', {
+        params:{
+          schedule_id: id
+        }
+      })   
+      
+      const filtrItem = list.filter(item => {
+        return (item?.id !== id)
+      })
+      setList(filtrItem)
+      onClose()
+      alert('Serviço finalizar com sucesso!')
+      
+    } catch (error) {
+      console.log(error);
+      onClose()
+      alert('Error ao finalizar serviço!')
+    }
+  }
+
   return (
   <>
     <Head>
@@ -117,14 +142,14 @@ export default function Dashboard({ schedule }: DashboardProps) {
                     color='#F1F1F1'
                     mb={isMobile ? 2 : 0}
                   >
-                    {item?.haircut.name}
+                    {item?.haircut?.name}
                   </Text>
                   <Text
                     fontWeight='bold'
                     color='#F1F1F1'
                     mb={isMobile ? 2 : 0}
                   >
-                    R$ {Number(item?.haircut.price).toFixed(2)}
+                    R$ {Number(item?.haircut?.price).toFixed(2)}
                   </Text>
 
                 </Flex>
@@ -141,7 +166,7 @@ export default function Dashboard({ schedule }: DashboardProps) {
       onOpen={onOpen}
       onClose={onClose}
       data={service}
-      finishService={async () => {} }
+      finishService={ () => handleFinish(service?.id) }
     />
 
   </>

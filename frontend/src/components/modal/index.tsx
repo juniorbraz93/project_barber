@@ -35,8 +35,38 @@ export function ModalInfo({ isOpen, onOpen, onClose, data, finishService }: Moda
 
         <ModalBody>
           <Flex align='center' mb={3}>
-            <Text color='#FFF' >TESTE MODAL</Text>
+            <FiUser size={28} color='#FFB13E' />
+            <Text color='#FFF' ml={3} fontSize='2xl' fontWeight='bold' >
+              {data?.customer}
+            </Text>
           </Flex>
+
+          <Flex align='center' mb={3}>
+            <FiScissors size={28} color='#FFF' />
+            <Text color='#FFF' ml={3} fontSize='large' fontWeight='bold' >
+              {data?.haircut?.name}
+            </Text>
+          </Flex>
+
+          <Flex align='center' mb={3}>
+            <FaMoneyBillAlt size={28} color='#46EF75' />
+            <Text color='#FFF' ml={3} fontSize='large' fontWeight='bold' >
+              R$ {Number(data?.haircut?.price).toFixed(2)}
+            </Text>
+          </Flex>
+
+          <ModalFooter>
+            <Button
+              color='#FFF'
+              bg='button.cta'
+              mr={3}
+              _hover={{ bg:'#FFB13E'}}
+              onClick={() => finishService()}
+            >
+              Finalizar serviço
+            </Button>        
+          </ModalFooter>
+
         </ModalBody>
 
       </ModalContent>
